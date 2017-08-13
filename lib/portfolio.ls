@@ -6,7 +6,7 @@ obj-map = Obj.map
 export
   ensure-exists: (file) ->
     unless existsSync file
-      console.error "Cannot find file #{options.file}."
+      console.error "Cannot find file #{file}."
       process.exit -1
 
   load: (file) ->

@@ -94,7 +94,7 @@ function get-latest(hodlings)
 
   Promise.join do
     make-request(\global/)
-    make-request(\ticker/).then (entity) -> { [..symbol, ..] for entity }
+    make-request(\ticker/?limit=0).then (entity) -> { [..symbol, ..] for entity }
     process-data
   .catch (e) !->
     console.error "!!! Error accessing service: #{e}"

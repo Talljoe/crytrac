@@ -16,7 +16,7 @@ portfolio.ensure-exists options.file
 renderer = new options.Renderer(options)
 
 execute = (cb = console.log) ->
-  portfolio.load(options.file)
+  portfolio.loadNew(options.file)
   |> get-latest
   |> (.then renderer.render)
   |> (.then cb)
@@ -47,10 +47,10 @@ else
 
 function get-latest(hodlings)
   process-data = (global, currencies) ->
-    get-value = ({ symbol, amount }) ->
-      currency = currencies[symbol]
+    get-value = ({ id, symbol, amount }) ->
+      currency = currencies[id] || currencies[symbol]
       unless currency? then
-        console.error "Unknown coin: #{symbol}"
+        console.error "Unknown coin: #{id || symbol}"
         return
 
       fx = options.convert.toLowerCase!
@@ -59,6 +59,7 @@ function get-latest(hodlings)
       amount-for-currency = (*) amount
       value = amount-for-currency price
       value-btc = amount-for-currency price-btc
+      symbol = currency.symbol
       return
         count: amount
         value: value
@@ -94,7 +95,7 @@ function get-latest(hodlings)
 
   Promise.join do
     make-request(\global/)
-    make-request(\ticker/?limit=0).then (entity) -> { [..symbol, ..] for entity }
+    make-request(\ticker/?limit=0).then (entity) -> { [..symbol, ..] for entity } <<< { [..id, ..] for entity }
     process-data
   .catch (e) !->
     console.error "!!! Error accessing service: #{e}"

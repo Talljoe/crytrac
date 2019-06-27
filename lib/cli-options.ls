@@ -14,7 +14,7 @@ export get-options = ->
     .option "-s, --symbol" "use symbol instead of full name"
     .option "-v, --value-only" "only display value (deprecated)"
     .option "-c, --show-count" "show amount of each coin (deprecated)"
-    .option "-f, --file <f>" "file to use for holdings [~/.hodlings]" (homedir! + '/.hodlings')
+    .option "-f, --file <f>" "file to use for holdings [~/.hodlings]" (homedir! + '/.crytrac/holdings.yaml')
     .option "-x, --convert <currency>" "currency to display", parse-currency, "USD"
     .option "--hide-header" "don't display table header"
     .option "--format <format>" "sets ouput format (table,csv) [table]", \table
